@@ -7,7 +7,7 @@ class MyColor {
   static Color textColor = Color(0xff4F5A69);
   static Color sportColor = Color(0xffC91C22);
   static Color healthColor = Color(0xffED1E79);
-  static Color enviromentColor = Color(0xff4882CF);
+  static Color environmentColor = Color(0xff4882CF);
   static Color politicsColor = Color(0xff003E90);
   static Color businessColor = Color(0xffCF7E48);
   static Color scienceColor = Color(0xffF2D352);
