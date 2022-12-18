@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/component/style/my_color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:news_app/shared/style/my_color.dart';
 
 class DrawerWidget extends StatelessWidget {
+  static const int categoryNumber = 1;
+  static const int settingNumber = 2;
+
+  Function drawerCallBackFun;
+
+  DrawerWidget({required this.drawerCallBackFun});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -11,7 +19,7 @@ class DrawerWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 64),
           color: MyColor.primaryColor,
           child: Text(
-            'News App!',
+            AppLocalizations.of(context)!.newsApp,
             style: Theme.of(context).textTheme.headline2,
             textAlign: TextAlign.center,
           ),
@@ -19,7 +27,9 @@ class DrawerWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              drawerCallBackFun(categoryNumber);
+            },
             child: Row(
               children: [
                 const Icon(
@@ -30,7 +40,7 @@ class DrawerWidget extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  'Categories',
+                  AppLocalizations.of(context)!.categories,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ],
@@ -40,7 +50,9 @@ class DrawerWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              drawerCallBackFun(settingNumber);
+            },
             child: Row(
               children: [
                 const Icon(
@@ -51,7 +63,7 @@ class DrawerWidget extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  'Settings',
+                  AppLocalizations.of(context)!.settings,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ],

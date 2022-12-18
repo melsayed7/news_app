@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/model/category_model.dart';
 import 'package:news_app/modual/category/build_category_item.dart';
 
-class CategoryWidget extends StatelessWidget {
-  var categoryItem = CategoryModel.getCategoryItem();
-
+class CategoryHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var categoryItem = CategoryModel.getCategoryItem(context);
     return Container(
       margin: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Pick your category \n of interest',
+            AppLocalizations.of(context)!.pickCategory,
             style: Theme.of(context).textTheme.subtitle2,
           ),
           const SizedBox(

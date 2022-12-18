@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/component/style/my_color.dart';
+import 'package:news_app/shared/style/my_color.dart';
 
 class MyTheme {
 
