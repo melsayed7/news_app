@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/model/NewsResponse.dart';
 import 'package:news_app/modual/category/news_item.dart';
 import 'package:news_app/shared/network/remote/api_manger.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/shared/style/my_color.dart';
 
 class NewsSearch extends SearchDelegate {
   late Future<NewsResponse> futureOfNewsResponse;
 
   NewsSearch() {
-    futureOfNewsResponse = ApiManger.searchNews(query);
+    futureOfNewsResponse = ApiManger.getNews(text: query);
   }
 
   @override
@@ -47,7 +47,7 @@ class NewsSearch extends SearchDelegate {
         fit: BoxFit.fill,
       )),
       child: FutureBuilder<NewsResponse>(
-        future: ApiManger.searchNews(query),
+        future: ApiManger.getNews(text: query),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -61,7 +61,7 @@ class NewsSearch extends SearchDelegate {
                   const Text('Some Thing Go Wrong'),
                   ElevatedButton(
                       onPressed: () {
-                        ApiManger.searchNews(query);
+                        ApiManger.getNews(text: query);
                       },
                       child: const Text('Try Again'))
                 ],

@@ -5,6 +5,7 @@ import 'package:news_app/modual/category/news_item_details.dart';
 import 'package:news_app/provider/app_provider.dart';
 import 'package:news_app/shared/style/my_Theme.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
@@ -15,10 +16,13 @@ void main() {
   );
 }
 
+late AppProvider provider;
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<AppProvider>(context);
+    provider = Provider.of<AppProvider>(context);
+    initSharedPref();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: HomeScreen.routeName,
@@ -32,4 +36,10 @@ class MyApp extends StatelessWidget {
       theme: MyTheme.lightTheme,
     );
   }
+}
+
+void initSharedPref() async {
+  final prefs = await SharedPreferences.getInstance();
+  String lang = prefs.getString('language') ?? 'en';
+  provider.changeLanguage(lang);
 }
