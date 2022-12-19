@@ -12,5 +12,7 @@
 "language" : "Language",
 "english" : "English",
 "arabic" : "Arabic",
-"pickCategory" : "Pick your category \n of interest"
+"pickCategory" : "Pick your category \n of interest",
+"search": "Search",
+"suggestion": "Suggestion"
 }

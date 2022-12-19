@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:news_app/model/NewsResponse.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class NewsItemDetails extends StatefulWidget {
+class NewsItemDetails extends StatelessWidget {
   static const String routeName = 'NewsItemDetails';
 
-  @override
-  State<NewsItemDetails> createState() => _NewsItemDetailsState();
-}
-
-class _NewsItemDetailsState extends State<NewsItemDetails> {
   @override
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)!.settings.arguments as Articles;
@@ -90,17 +85,12 @@ class _NewsItemDetailsState extends State<NewsItemDetails> {
                   children: [
                     TextButton(
                       onPressed: () async {
-                        print(args.url ?? '');
                         var url = Uri.parse(args.url ?? '');
-                        print('+++++++++++++++');
-                        print(url);
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url);
                         } else {
                           throw 'Could not launch $url';
                         }
-
-                        setState(() {});
                       },
                       child: const Text(
                         'View Full Article',

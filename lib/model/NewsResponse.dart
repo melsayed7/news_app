@@ -5,7 +5,6 @@ class NewsResponse {
   int? totalResults;
   List<Articles>? articles;
   String? message;
-
   String? code;
 
   NewsResponse({

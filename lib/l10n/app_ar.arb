@@ -12,5 +12,7 @@
 "language" : "اللغة",
 "english" : "الانجليزية",
 "arabic" : "العربية",
-"pickCategory" : "اختر فئة اهتمامك"
+"pickCategory" : "اختر فئة اهتمامك",
+"search": "بحث",
+"suggestion": "اقتراحات"
 }

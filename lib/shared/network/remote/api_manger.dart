@@ -8,11 +8,13 @@ class ApiManger {
   static const String baseUrl = 'newsapi.org';
   static const String apiKey = '2e8b89193da249e5a3d8e9c11cf911ae';
 
+//'500c5a4f9b244f3db92a47f436f1819e'
+  //7861220fedd4485cb3288fdd8c4abc50
   //https://newsapi.org/v2/top-headlines/sources?apiKey=API_KEY
 
   static Future<SourcesResponse> getSources(String categoryID) async {
     var url = Uri.https(baseUrl, '/v2/top-headlines/sources',
-        {'apiKey': '500c5a4f9b244f3db92a47f436f1819e', 'category': categoryID});
+        {'apiKey': apiKey, 'category': categoryID});
     try {
       var response = await http.get(url);
       var bodyString = response.body;
@@ -27,8 +29,26 @@ class ApiManger {
   //https://newsapi.org/v2/everything?sources=bitcoin&apiKey=2e8b89193da249e5a3d8e9c11cf911ae
   static Future<NewsResponse> getNews(String sourceID) async {
     var url = Uri.https(baseUrl, '/v2/everything', {
-      'apiKey': '500c5a4f9b244f3db92a47f436f1819e',
+      'apiKey': apiKey,
       'sources': sourceID,
+    });
+    try {
+      var response = await http.get(url);
+      var bodyString = response.body;
+      var json = jsonDecode(bodyString);
+      var newsResponse = NewsResponse.fromJson(json);
+      return newsResponse;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  //https://newsapi.org/v2/everything?q=flu&apiKey=2e8b89193da249e5a3d8e9c11cf911ae
+
+  static Future<NewsResponse> searchNews(String text) async {
+    var url = Uri.https(baseUrl, '/v2/everything', {
+      'apiKey': apiKey,
+      'q': text,
     });
     try {
       var response = await http.get(url);
