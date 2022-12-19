@@ -1,0 +1,18 @@
+{
+"newsApp" : "تطبيق الاخبار",
+"categories" : "الفئات",
+"settings" : "الاعدادات",
+"sports" : "الرياضة",
+"technology" : "التكنولوجيا",
+"general" : "عام",
+"health" : "الصحة",
+"business" : "الاعمال",
+"environment" : "البيئة",
+"science" : "العلوم",
+"language" : "اللغة",
+"english" : "الانجليزية",
+"arabic" : "العربية",
+"pickCategory" : "اختر فئة اهتمامك",
+"search": "بحث",
+"suggestion": "اقتراحات"
+}
