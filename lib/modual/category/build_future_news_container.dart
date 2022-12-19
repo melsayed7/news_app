@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:news_app/model/NewsResponse.dart';
 import 'package:news_app/model/SourcesResponse.dart';
 import 'package:news_app/modual/category/news_item.dart';
+import 'package:news_app/shared/network/remote/api_manger.dart';
 import 'package:news_app/shared/style/my_color.dart';
-
-import '../../api/api_manger.dart';
 
 class BuildFutureNewsContainer extends StatelessWidget {
   Source source;

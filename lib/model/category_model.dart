@@ -16,14 +16,19 @@ class CategoryModel {
   static List<CategoryModel> getCategoryItem(BuildContext context) {
     return [
       CategoryModel(
-          id: 'sport',
+          id: 'sports',
           imagePath: 'assets/images/sports.png',
           title: AppLocalizations.of(context)!.sports,
           color: 0xffC91C22),
       CategoryModel(
-          id: 'politics',
+          id: 'entertainment',
+          imagePath: 'assets/images/environment.png',
+          title: AppLocalizations.of(context)!.environment,
+          color: 0xff4882CF),
+      CategoryModel(
+          id: 'technology',
           imagePath: 'assets/images/Politics.png',
-          title: AppLocalizations.of(context)!.politics,
+          title: AppLocalizations.of(context)!.technology,
           color: 0xff003E90),
       CategoryModel(
           id: 'health',
@@ -36,15 +41,16 @@ class CategoryModel {
           title: AppLocalizations.of(context)!.business,
           color: 0xffCF7E48),
       CategoryModel(
-          id: 'environment',
-          imagePath: 'assets/images/environment.png',
-          title: AppLocalizations.of(context)!.environment,
-          color: 0xff4882CF),
-      CategoryModel(
           id: 'science',
           imagePath: 'assets/images/science.png',
           title: AppLocalizations.of(context)!.science,
           color: 0xffF2D352),
+      CategoryModel(
+          id: 'general',
+          imagePath: 'assets/images/environment.png',
+          title: AppLocalizations.of(context)!.general,
+          color: 0xff003E90),
     ];
   }
 }
+//technology

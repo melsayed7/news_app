@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/api/api_manger.dart';
 import 'package:news_app/model/SourcesResponse.dart';
+import 'package:news_app/model/category_model.dart';
 import 'package:news_app/modual/category/tabs_news_screen.dart';
+import 'package:news_app/shared/network/remote/api_manger.dart';
 import 'package:news_app/shared/style/my_color.dart';
 
 class BuildFutureTabContainer extends StatelessWidget {
+  CategoryModel categoryModel;
+
+  BuildFutureTabContainer({required this.categoryModel});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SourcesResponse>(
-      future: ApiManger.getSources(),
+      future: ApiManger.getSources(categoryModel.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -22,7 +27,7 @@ class BuildFutureTabContainer extends StatelessWidget {
                 const Text('Some Thing Go Wrong'),
                 ElevatedButton(
                     onPressed: () {
-                      ApiManger.getSources();
+                      ApiManger.getSources(categoryModel.id);
                     },
                     child: const Text('Try Again'))
               ],

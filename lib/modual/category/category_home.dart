@@ -4,6 +4,10 @@ import 'package:news_app/model/category_model.dart';
 import 'package:news_app/modual/category/build_category_item.dart';
 
 class CategoryHome extends StatelessWidget {
+  Function onClickedCategoryItem;
+
+  CategoryHome({required this.onClickedCategoryItem});
+
   @override
   Widget build(BuildContext context) {
     var categoryItem = CategoryModel.getCategoryItem(context);
@@ -27,9 +31,14 @@ class CategoryHome extends StatelessWidget {
                 crossAxisSpacing: 15,
               ),
               itemBuilder: (context, index) {
-                return buildCategoryItem(
-                  index: index,
-                  categoryModel: categoryItem[index],
+                return InkWell(
+                  onTap: () {
+                    onClickedCategoryItem(categoryItem[index]);
+                  },
+                  child: buildCategoryItem(
+                    index: index,
+                    categoryModel: categoryItem[index],
+                  ),
                 );
               },
               itemCount: categoryItem.length,

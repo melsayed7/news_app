@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/layout/drawer_widget.dart';
 import 'package:news_app/model/SourcesResponse.dart';
+import 'package:news_app/model/category_model.dart';
 import 'package:news_app/modual/category/build_future_tab_container.dart';
 import 'package:news_app/modual/category/category_home.dart';
 import 'package:news_app/modual/setting/setting_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String routeName = 'home';
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   Source? source;
 
   @override
@@ -22,22 +29,46 @@ class HomeScreen extends StatelessWidget {
         ),
         Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.newsApp),
+            title: Text(selectedCategory == null
+                ? AppLocalizations.of(context)!.newsApp
+                : selectedCategory?.title ?? ''),
+            actions: [
+              selectedCategory == null
+                  ? Container()
+                  : IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.search_sharp,
+                        size: 30,
+                      ))
+            ],
           ),
           drawer: Drawer(
-            child: DrawerWidget(drawerCallBackFun: chosenDrawerItem),
+            child: DrawerWidget(drawerCallBackFun: onSelectedDrawerItem),
           ),
-          body: BuildFutureTabContainer(),
+          body: selectedDrawerItem == DrawerWidget.settingNumber
+              ? const SettingScreen()
+              : selectedCategory == null
+                  ? CategoryHome(onClickedCategoryItem: onClickedCategoryItem)
+                  : BuildFutureTabContainer(categoryModel: selectedCategory!),
         ),
       ],
     );
   }
 
-  void chosenDrawerItem() {
-    if (CategoryHome == DrawerWidget.categoryNumber) {
-      CategoryHome();
-    } else if (CategoryHome == DrawerWidget.settingNumber) {
-      SettingScreen();
-    }
+  CategoryModel? selectedCategory;
+
+  void onClickedCategoryItem(CategoryModel categoryModel) {
+    selectedCategory = categoryModel;
+    setState(() {});
+  }
+
+  var selectedDrawerItem = DrawerWidget.categoryNumber;
+
+  void onSelectedDrawerItem(int selectedItem) {
+    selectedDrawerItem = selectedItem;
+    selectedCategory = null;
+    Navigator.of(context).pop();
+    setState(() {});
   }
 }
