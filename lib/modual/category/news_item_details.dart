@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/model/NewsResponse.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +18,12 @@ class NewsItemDetails extends StatelessWidget {
           fit: BoxFit.fill,
         ),
         Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text(
+              AppLocalizations.of(context)!.newsDetails,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: Column(
@@ -56,6 +62,9 @@ class NewsItemDetails extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Text(
                   args.publishedAt?.substring(0, 10) ?? '',

@@ -6,7 +6,7 @@ import 'package:news_app/model/SourcesResponse.dart';
 
 class ApiManger {
   static const String baseUrl = 'newsapi.org';
-  static const String apiKey = '7861220fedd4485cb3288fdd8c4abc50';
+  static const String apiKey = '500c5a4f9b244f3db92a47f436f1819e';
 
 //'500c5a4f9b244f3db92a47f436f1819e'
 // 7861220fedd4485cb3288fdd8c4abc50

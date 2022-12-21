@@ -16,10 +16,10 @@ class BuildFutureNewsContainer extends StatefulWidget {
 }
 
 class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
-  int pageNumber = 0;
-
-  final ScrollController scrollController = ScrollController();
-  bool atBottom = false;
+  ScrollController scrollController = ScrollController();
+  bool isLoading = false;
+  int page = 0;
+  List<Articles> newsArticles = [];
 
   @override
   void initState() {
@@ -28,8 +28,8 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels == 0) {
           bool isTop = scrollController.position.pixels == 0;
-          if (!isTop) {
-            atBottom = true;
+          if (isTop) {
+            isLoading = true;
             setState(() {});
           }
         }
@@ -38,26 +38,13 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
   }
 
   @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<NewsResponse>(
-      future: !atBottom
+      future: !isLoading
           ? ApiManger.getNews(sourceID: widget.source.id ?? '')
-          : ApiManger.getNews(
-              sourceID: widget.source.id ?? '', page: ++pageNumber),
+          : ApiManger.getNews(sourceID: widget.source.id ?? '', page: ++page),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: CircularProgressIndicator(
-            color: MyColor.primaryColor,
-          ));
-        } else if (snapshot.hasError) {
-          scrollController.jumpTo(0);
+        if (snapshot.hasError) {
           return Center(
             child: Column(
               children: [
@@ -70,18 +57,30 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
               ],
             ),
           );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: MyColor.primaryColor,
+            ),
+          );
         }
         if (snapshot.data?.status != 'ok') {
           return Center(
             child: Column(
               children: [
                 Text(snapshot.data?.message ?? ''),
-                ElevatedButton(onPressed: () {}, child: const Text('Try Again'))
+                ElevatedButton(
+                    onPressed: () {
+                      ApiManger.getNews(sourceID: widget.source.id ?? '');
+                    },
+                    child: const Text('Try Again'))
               ],
             ),
           );
         }
+
         var newsList = snapshot.data?.articles ?? [];
+        newsArticles.addAll(newsList);
         return ListView.builder(
           controller: scrollController,
           itemCount: newsList.length,
