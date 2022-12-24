@@ -17,8 +17,8 @@ class BuildFutureNewsContainer extends StatefulWidget {
 
 class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
   ScrollController scrollController = ScrollController();
-  bool isLoading = false;
-  int page = 0;
+  bool loading = false;
+  int page = 1;
   List<Articles> newsArticles = [];
 
   @override
@@ -26,29 +26,44 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
     super.initState();
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels == 0) {
-          bool isTop = scrollController.position.pixels == 0;
-          if (isTop) {
-            isLoading = true;
-            setState(() {});
-          }
+        bool isTop = scrollController.position.pixels == 0;
+        if (isTop == false) {
+          loading = true;
+          setState(() {});
         }
+        print(isTop);
       }
     });
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (loading == true) {
+      ApiManger.getNews(sourceID: widget.source.id ?? '', page: ++page)
+          .then((value) {
+        var newsList = value.articles;
+        newsArticles.addAll(newsList ?? []);
+        loading = false;
+        setState(() {});
+        print(newsList!.elementAt(1).author);
+        print(page);
+      });
+    }
+
     return FutureBuilder<NewsResponse>(
-      future: !isLoading
-          ? ApiManger.getNews(sourceID: widget.source.id ?? '')
-          : ApiManger.getNews(sourceID: widget.source.id ?? '', page: ++page),
+      future: ApiManger.getNews(sourceID: widget.source.id ?? ''),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
             child: Column(
               children: [
-                const Text('Some Thing Go Wrong'),
+                Text(snapshot.error.toString()),
                 ElevatedButton(
                     onPressed: () {
                       ApiManger.getNews(sourceID: widget.source.id ?? '');
@@ -57,6 +72,14 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
               ],
             ),
           );
+        } else if (snapshot.hasData) {
+          if (newsArticles.isEmpty) {
+            newsArticles = snapshot.data?.articles ?? [];
+          }
+          if (newsArticles[0].title != snapshot.data?.articles![0].title) {
+            newsArticles = snapshot.data?.articles ?? [];
+            scrollController.jumpTo(0);
+          }
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
@@ -80,7 +103,7 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
         }
 
         var newsList = snapshot.data?.articles ?? [];
-        newsArticles.addAll(newsList);
+
         return ListView.builder(
           controller: scrollController,
           itemCount: newsList.length,
