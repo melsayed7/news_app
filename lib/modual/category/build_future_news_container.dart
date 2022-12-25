@@ -51,7 +51,7 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
         newsArticles.addAll(newsList ?? []);
         loading = false;
         setState(() {});
-        print(newsList!.elementAt(1).author);
+        print(newsList?.length);
         print(page);
       });
     }
@@ -72,22 +72,7 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
               ],
             ),
           );
-        } else if (snapshot.hasData) {
-          if (newsArticles.isEmpty) {
-            newsArticles = snapshot.data?.articles ?? [];
-          }
-          if (newsArticles[0].title != snapshot.data?.articles![0].title) {
-            newsArticles = snapshot.data?.articles ?? [];
-            scrollController.jumpTo(0);
-          }
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: MyColor.primaryColor,
-            ),
-          );
-        }
-        if (snapshot.data?.status != 'ok') {
+        } else if (snapshot.data?.status != 'ok') {
           return Center(
             child: Column(
               children: [
@@ -100,16 +85,28 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
               ],
             ),
           );
+        } else if (snapshot.hasData) {
+          if (newsArticles.isEmpty) {
+            newsArticles = snapshot.data?.articles ?? [];
+          }
+          if (newsArticles[0].title != snapshot.data?.articles![0].title) {
+            newsArticles = snapshot.data?.articles ?? [];
+            scrollController.jumpTo(0);
+          }
+
+          return ListView.builder(
+            controller: scrollController,
+            itemCount: newsArticles.length,
+            itemBuilder: (context, index) {
+              return NewsItem(articles: newsArticles[index]);
+            },
+          );
         }
 
-        var newsList = snapshot.data?.articles ?? [];
-
-        return ListView.builder(
-          controller: scrollController,
-          itemCount: newsList.length,
-          itemBuilder: (context, index) {
-            return NewsItem(articles: newsList[index]);
-          },
+        return Center(
+          child: CircularProgressIndicator(
+            color: MyColor.primaryColor,
+          ),
         );
       },
     );
