@@ -6,12 +6,13 @@ import 'package:news_app/model/SourcesResponse.dart';
 
 class ApiManger {
   static const String baseUrl = 'newsapi.org';
-  static const String apiKey = '7861220fedd4485cb3288fdd8c4abc50';
+  static const String apiKey = '204cd5e07430461e919cd532f87a7f0e';
 
-//'500c5a4f9b244f3db92a47f436f1819e'
+// 500c5a4f9b244f3db92a47f436f1819e
 // 7861220fedd4485cb3288fdd8c4abc50
 // 2e8b89193da249e5a3d8e9c11cf911ae me
-  //https://newsapi.org/v2/top-headlines/sources?apiKey=API_KEY
+// 204cd5e07430461e919cd532f87a7f0e
+// https://newsapi.org/v2/top-headlines/sources?apiKey=API_KEY
 
   static Future<SourcesResponse> getSources(String categoryID) async {
     var url = Uri.https(baseUrl, '/v2/top-headlines/sources',

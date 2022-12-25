@@ -37,6 +37,7 @@ class _TabsNewsScreenState extends State<TabsNewsScreen> {
                     ))
                 .toList(),
           ),
+          const SizedBox(height: 20),
           Expanded(
             child: BuildFutureNewsContainer(
               source: widget.sourceList[selectedIndex],

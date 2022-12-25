@@ -16,23 +16,22 @@ class BuildFutureNewsContainer extends StatefulWidget {
 }
 
 class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
-  int pageNumber = 0;
-
-  final ScrollController scrollController = ScrollController();
-  bool atBottom = false;
+  ScrollController scrollController = ScrollController();
+  bool loading = false;
+  int page = 1;
+  List<Articles> newsArticles = [];
 
   @override
   void initState() {
     super.initState();
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels == 0) {
-          bool isTop = scrollController.position.pixels == 0;
-          if (!isTop) {
-            atBottom = true;
-            setState(() {});
-          }
+        bool isTop = scrollController.position.pixels == 0;
+        if (isTop == false) {
+          loading = true;
+          setState(() {});
         }
+        print(isTop);
       }
     });
   }
@@ -45,23 +44,26 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
 
   @override
   Widget build(BuildContext context) {
+    if (loading == true) {
+      ApiManger.getNews(sourceID: widget.source.id ?? '', page: ++page)
+          .then((value) {
+        var newsList = value.articles;
+        newsArticles.addAll(newsList ?? []);
+        loading = false;
+        setState(() {});
+        print(newsList?.length);
+        print(page);
+      });
+    }
+
     return FutureBuilder<NewsResponse>(
-      future: !atBottom
-          ? ApiManger.getNews(sourceID: widget.source.id ?? '')
-          : ApiManger.getNews(
-              sourceID: widget.source.id ?? '', page: ++pageNumber),
+      future: ApiManger.getNews(sourceID: widget.source.id ?? ''),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: CircularProgressIndicator(
-            color: MyColor.primaryColor,
-          ));
-        } else if (snapshot.hasError) {
-          scrollController.jumpTo(0);
+        if (snapshot.hasError) {
           return Center(
             child: Column(
               children: [
-                const Text('Some Thing Go Wrong'),
+                Text(snapshot.error.toString()),
                 ElevatedButton(
                     onPressed: () {
                       ApiManger.getNews(sourceID: widget.source.id ?? '');
@@ -70,24 +72,41 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
               ],
             ),
           );
-        }
-        if (snapshot.data?.status != 'ok') {
+        } else if (snapshot.data?.status != 'ok') {
           return Center(
             child: Column(
               children: [
                 Text(snapshot.data?.message ?? ''),
-                ElevatedButton(onPressed: () {}, child: const Text('Try Again'))
+                ElevatedButton(
+                    onPressed: () {
+                      ApiManger.getNews(sourceID: widget.source.id ?? '');
+                    },
+                    child: const Text('Try Again'))
               ],
             ),
           );
+        } else if (snapshot.hasData) {
+          if (newsArticles.isEmpty) {
+            newsArticles = snapshot.data?.articles ?? [];
+          }
+          if (newsArticles[0].title != snapshot.data?.articles![0].title) {
+            newsArticles = snapshot.data?.articles ?? [];
+            scrollController.jumpTo(0);
+          }
+
+          return ListView.builder(
+            controller: scrollController,
+            itemCount: newsArticles.length,
+            itemBuilder: (context, index) {
+              return NewsItem(articles: newsArticles[index]);
+            },
+          );
         }
-        var newsList = snapshot.data?.articles ?? [];
-        return ListView.builder(
-          controller: scrollController,
-          itemCount: newsList.length,
-          itemBuilder: (context, index) {
-            return NewsItem(articles: newsList[index]);
-          },
+
+        return Center(
+          child: CircularProgressIndicator(
+            color: MyColor.primaryColor,
+          ),
         );
       },
     );

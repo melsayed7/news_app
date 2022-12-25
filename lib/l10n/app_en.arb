@@ -14,5 +14,6 @@
 "arabic" : "Arabic",
 "pickCategory" : "Pick your category \n of interest",
 "search": "Search",
-"suggestion": "Suggestion"
+"suggestion": "Suggestion",
+"newsDetails" : "News Details"
 }
