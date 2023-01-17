@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/model/NewsResponse.dart';
-import 'package:news_app/modual/category/news_item.dart';
+import 'package:news_app/module/category/news_item.dart';
 import 'package:news_app/shared/network/remote/api_manger.dart';
 import 'package:news_app/shared/style/my_color.dart';
 

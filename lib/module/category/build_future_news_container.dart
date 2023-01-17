@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/model/NewsResponse.dart';
 import 'package:news_app/model/SourcesResponse.dart';
-import 'package:news_app/modual/category/news_item.dart';
+import 'package:news_app/module/category/news_item.dart';
 import 'package:news_app/shared/network/remote/api_manger.dart';
 import 'package:news_app/shared/style/my_color.dart';
 
@@ -17,7 +17,7 @@ class BuildFutureNewsContainer extends StatefulWidget {
 
 class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
   ScrollController scrollController = ScrollController();
-  bool loading = false;
+  bool loadingNextPage = false;
   int page = 1;
   List<Articles> newsArticles = [];
 
@@ -27,11 +27,10 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         bool isTop = scrollController.position.pixels == 0;
-        if (isTop == false) {
-          loading = true;
+        if (!isTop) {
+          loadingNextPage = true;
           setState(() {});
         }
-        print(isTop);
       }
     });
   }
@@ -44,15 +43,13 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading == true) {
+    if (loadingNextPage == true) {
       ApiManger.getNews(sourceID: widget.source.id ?? '', page: ++page)
-          .then((value) {
-        var newsList = value.articles;
+          .then((newsResponse) {
+        var newsList = newsResponse.articles;
         newsArticles.addAll(newsList ?? []);
-        loading = false;
+        loadingNextPage = false;
         setState(() {});
-        print(newsList?.length);
-        print(page);
       });
     }
 
@@ -72,7 +69,7 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
               ],
             ),
           );
-        } else if (snapshot.data?.status != 'ok') {
+        } else if (snapshot.data?.status == 'error') {
           return Center(
             child: Column(
               children: [
@@ -88,10 +85,10 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
         } else if (snapshot.hasData) {
           if (newsArticles.isEmpty) {
             newsArticles = snapshot.data?.articles ?? [];
-          }
-          if (newsArticles[0].title != snapshot.data?.articles![0].title) {
-            newsArticles = snapshot.data?.articles ?? [];
+          } else if (newsArticles[0].title !=
+              snapshot.data?.articles?[0].title) {
             scrollController.jumpTo(0);
+            newsArticles = snapshot.data?.articles ?? [];
           }
 
           return ListView.builder(
@@ -102,7 +99,6 @@ class _BuildFutureNewsContainerState extends State<BuildFutureNewsContainer> {
             },
           );
         }
-
         return Center(
           child: CircularProgressIndicator(
             color: MyColor.primaryColor,

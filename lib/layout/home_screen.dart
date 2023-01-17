@@ -3,10 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:news_app/layout/drawer_widget.dart';
 import 'package:news_app/model/SourcesResponse.dart';
 import 'package:news_app/model/category_model.dart';
-import 'package:news_app/modual/category/build_future_tab_container.dart';
-import 'package:news_app/modual/category/category_home.dart';
-import 'package:news_app/modual/category/search_widget.dart';
-import 'package:news_app/modual/setting/setting_screen.dart';
+import 'package:news_app/module/category/build_future_tab_container.dart';
+import 'package:news_app/module/category/category_home.dart';
+import 'package:news_app/module/category/search_widget.dart';
+import 'package:news_app/module/setting/setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'home';

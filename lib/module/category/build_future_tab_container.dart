@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/model/SourcesResponse.dart';
 import 'package:news_app/model/category_model.dart';
-import 'package:news_app/modual/category/tabs_news_screen.dart';
+import 'package:news_app/module/category/tabs_news_screen.dart';
 import 'package:news_app/shared/network/remote/api_manger.dart';
 import 'package:news_app/shared/style/my_color.dart';
 

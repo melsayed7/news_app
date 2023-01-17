@@ -29,8 +29,11 @@ class ApiManger {
   }
 
   //https://newsapi.org/v2/everything?sources=bitcoin&apiKey=2e8b89193da249e5a3d8e9c11cf911ae
-  static Future<NewsResponse> getNews(
-      {String? sourceID, String? text, int? page}) async {
+  static Future<NewsResponse> getNews({
+    String? sourceID,
+    String? text,
+    int? page,
+  }) async {
     var url = Uri.https(baseUrl, '/v2/everything', {
       'apiKey': apiKey,
       'sources': sourceID,
@@ -48,5 +51,4 @@ class ApiManger {
       throw error;
     }
   }
-
 }

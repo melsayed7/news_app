@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:news_app/modual/setting/language_model_sheet.dart';
+import 'package:news_app/module/setting/language_model_sheet.dart';
 import 'package:news_app/shared/style/my_color.dart';
 import 'package:provider/provider.dart';
 
